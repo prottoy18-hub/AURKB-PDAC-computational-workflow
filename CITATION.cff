@@ -1,31 +1,21 @@
-```yaml
 cff-version: 1.2.0
 
 message: >-
-  If you use this computational workflow, please cite this software using the
-  metadata provided in this file. Citation details for the associated research
-  article will be added after publication.
+  If you use this computational workflow, please cite the software and
+  associated research article.
 
 title: "AURKB–PDAC computational workflow"
 
 type: software
 
-author:
-Fajad Fardin
-ORCID : 0009-0008-3060-1989
-email : fahad47ju@gmail.com
+authors:
+  - given-names: "Fahad"
+    family-names: "Fardin"
 
 abstract: >-
   Computational notebooks and reproducibility documentation for a chemotype-aware
   QSAR–GCN consensus screening workflow for prioritizing natural-product-derived
-  AURKB-targeting candidates for pancreatic ductal adenocarcinoma. The repository
-  covers COCONUT natural-product prescreening, descriptor-based classical QSAR
-  analysis with scaffold-disjoint validation, and graph convolutional network
-  evaluation with QSAR–GCN consensus prioritization. The workflow reduced 738,827
-  COCONUT records to 86,056 prescreened compounds, retained a hash-verified
-  6,232-compound QSAR-to-GCN transfer set, and identified 615 Tier 1 and
-  29 Tier 1A candidates. Executed notebook outputs and provenance information are
-  retained to support verification of the reported workflow.
+  AURKB-targeting candidates for pancreatic ductal adenocarcinoma.
 
 keywords:
   - "Aurora kinase B"
@@ -38,5 +28,8 @@ keywords:
 
 license: BSD-3-Clause
 
+version: "1.0.0"
+
+date-released: "2026-08-18"
+
 repository-code: "https://github.com/prottoy18-hub/AURKB-PDAC-computational-workflow"
-```
