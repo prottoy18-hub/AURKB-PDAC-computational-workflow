@@ -1,0 +1,55 @@
+# Internal audit output — never publish
+audit_private/
+
+# Local release archives
+release/
+
+# Confidential manuscript and supplementary manuscript documents
+*.docx
+*.doc
+
+# Credentials and secrets
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+*token*
+*secret*
+*credential*
+.netrc
+.npmrc
+.pypirc
+
+# Jupyter and editor state
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+.vscode/
+.history/
+.idea/
+
+# Python build and cache
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.ipynb_convert/
+
+# OS and shell noise
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*.temp
+*.log
+*~
+
+# Assistant session logs
+.claude/
+*claude*session*
+*.session.json

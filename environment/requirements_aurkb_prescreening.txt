@@ -1,0 +1,6 @@
+pandas>=2.0
+numpy>=1.24
+rdkit>=2023.9
+tqdm>=4.65
+matplotlib>=3.7
+pyarrow>=12.0

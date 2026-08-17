@@ -1,0 +1,3 @@
+# Byte-exact storage. Line endings are never converted, so every checkout reproduces
+# the SHA-256 values recorded in MANIFEST.sha256 and provenance/artifact_manifest_sha256.csv.
+* -text

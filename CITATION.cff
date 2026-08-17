@@ -1,0 +1,47 @@
+cff-version: 1.2.0
+message: >-
+  If you use this repository, please cite the associated article. The author fields below are
+  PLACEHOLDERS: the manuscript file supplied with this repository contains no author block, and the
+  author list was deliberately not reconstructed. Replace every placeholder before release.
+title: AURKB-PDAC computational workflow
+abstract: >-
+  Executed computational notebooks and reproducibility documentation for a chemotype-aware QSAR-GCN
+  consensus screening study prioritizing natural-product-derived AURKB-targeting candidates for
+  pancreatic ductal adenocarcinoma. Covers COCONUT natural-product prescreening (738,827 records
+  reduced to 86,056 compounds), descriptor-based classical QSAR with scaffold-disjoint validation and
+  a hash-verified 6,232-row transfer, and DeepChem graph convolutional network validation with
+  QSAR-GCN consensus prioritization yielding 615 Tier 1 and 29 Tier 1A candidates. Notebooks are
+  supplied as executed, with original outputs retained.
+type: software
+authors:
+  - given-names: PLACEHOLDER
+    family-names: PLACEHOLDER
+    affiliation: PLACEHOLDER
+    orcid: PLACEHOLDER
+keywords:
+  - Aurora kinase B
+  - AURKB
+  - pancreatic ductal adenocarcinoma
+  - QSAR
+  - graph convolutional network
+  - consensus screening
+  - natural products
+  - molecular docking
+  - molecular dynamics
+license: PLACEHOLDER
+version: PLACEHOLDER
+date-released: PLACEHOLDER
+repository-code: PLACEHOLDER
+doi: PLACEHOLDER
+preferred-citation:
+  type: article
+  title: >-
+    Chemotype-aware QSAR-GCN consensus screening and molecular modeling prioritize
+    natural-product-derived AURKB-targeting candidates for pancreatic ductal adenocarcinoma
+  journal: Molecular Diversity
+  authors:
+    - given-names: PLACEHOLDER
+      family-names: PLACEHOLDER
+      affiliation: PLACEHOLDER
+  year: PLACEHOLDER
+  doi: PLACEHOLDER

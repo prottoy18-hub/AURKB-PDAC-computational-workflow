@@ -1,0 +1,6 @@
+SHA-256 of the locked original notebooks used as the source of the submission copies.
+Source directory: C:/Users/Prottoy/Desktop/Pancreatic_ductal_adenocarcinomma/Notebooks/Locked notebooks
+
+aba9086c337d97186688876511a84bab12b150cc6b06a13394f00aed1e96bee0  01_AURKB_Prescreening_PublicationReady_VSCode.ipynb
+43bc9c8a8e0619bb251ea94559e96f9fc36e6a2538ae2694ad68abe85a55e1fb  02_AURKB_Classical_QSAR_Final_Authoritative_Reproduction_VSCode_DRIFT_SAFE_v2.ipynb
+dc15d07b5ec55e257f5febeb3270ac0471efbed781a1187e64205f37b9cb42c2  03_AURKB_DeepChem_GCN_Consensus_Colab_PublicationReady_v2 (1).ipynb
