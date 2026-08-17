@@ -1,203 +1,203 @@
 # AURKB–PDAC computational workflow
 
-Computational notebooks and reproducibility documentation for the study:
+This repository contains the computational notebooks and supporting files associated with the study:
 
-> **Chemotype-aware QSAR–GCN consensus screening and molecular modeling prioritize
-> natural-product-derived AURKB-targeting candidates for pancreatic ductal adenocarcinoma**
+> **Chemotype-aware QSAR–GCN consensus screening and molecular modeling prioritize natural-product-derived AURKB-targeting candidates for pancreatic ductal adenocarcinoma**
 
-Target journal: *Molecular Diversity*.
+The repository documents the natural-product prescreening, classical QSAR modeling, graph convolutional network (GCN) analysis, and QSAR–GCN consensus prioritization stages of the study.
 
-> **Author information.** The author list, affiliations and corresponding-author details are not
-> recorded in the manuscript file supplied with this repository and have deliberately not been
-> reconstructed. They must be filled in by the authors here and in `CITATION.cff` before release.
+## 1. Workflow overview
 
----
-
-## 1. Purpose
-
-This repository contains the three executed notebooks that implement the compound-screening arm of
-the study, together with the exact supporting script, the recorded software environments and the
-integrity evidence needed to audit them.
-
-The notebooks cover natural-product prescreening, descriptor-based classical QSAR with
-scaffold-disjoint validation, and graph convolutional network (GCN) validation with QSAR–GCN
-consensus prioritization. The downstream molecular docking, developability/ADMET/toxicity triage,
-molecular-dynamics and miRNA analyses were performed with external tools described in the manuscript
-Methods and are **not** part of these notebooks.
-
-## 2. Workflow
+The computational screening workflow consisted of three consecutive stages:
 
 ```text
-COCONUT export
-   738,827 records
-       |
-       v
-[1] Prescreening ................ 86,056 standardized, lead-like, PAINS-free compounds
-       |
-       v
-[2] Classical QSAR ............. 86,056 screened -> 34,721 inside applicability domain
-       |                          -> 31,020 at p >= 0.50 -> 6,232 transferred
-       |                          (exact snapshot, SHA-256 8821947e...3673f4df)
-       v
-[3] GCN + consensus ............ 6,232 scored -> Tier 1 615 / Tier 2 3,742 /
-                                  Tier 3 936 / Tier 4 939 -> Tier 1A 29
-       |
-       v
-   docking (29) -> 17 at <= -9.0 kcal/mol -> ADMET/toxicity triage -> 3 x 100-ns MD
-   (performed outside this repository)
+COCONUT natural-product library
+        |
+        v
+[1] Prescreening
+    738,827 records
+        |
+        v
+    86,056 retained compounds
+        |
+        v
+[2] Classical QSAR
+    34,721 within applicability domain
+    31,020 with P(active) >= 0.50
+        |
+        v
+    6,232 compounds transferred to GCN analysis
+        |
+        v
+[3] GCN + QSAR–GCN consensus
+    615 Tier 1 candidates
+    29 Tier 1A candidates
+        |
+        v
+    Molecular docking and downstream analysis
 ```
 
-## 3. Notebooks, in execution order
+The 29 Tier 1A candidates were subsequently evaluated by molecular docking. Seventeen met the predefined docking-score threshold, followed by developability/toxicity assessment and molecular-dynamics analysis of three prioritized compounds. These downstream analyses were performed outside the notebooks included in this repository and are described in the manuscript and supplementary information.
 
-| Order | File | Input | Output |
-|---|---|---|---|
-| 1 | `notebooks/01_AURKB_COCONUT_Prescreening.ipynb` | COCONUT natural-product export | 86,056-compound prescreened library, filter audits, configuration and version logs, chemical-space figures |
-| 2 | `notebooks/02_AURKB_Classical_QSAR_Reproduction.ipynb` | curated ChEMBL AURKB set, frozen 217-descriptor matrix, archived model artifacts, the Notebook 1 library | hash-verified reproduction status and the exact 6,232-row QSAR→GCN transfer |
-| 3 | `notebooks/03_AURKB_GCN_Consensus_Screening.ipynb` | the 6,232-row transfer snapshot | calibrated GCN metrics, consensus scores, tier assignments, 29 Tier 1A candidates |
+## 2. Notebooks
 
-Each notebook opens with a documentation cell stating its purpose, workflow stage, inputs, outputs
-and relationship to the adjacent stages.
+The notebooks should be considered in the following order.
 
-## 4. Expected major counts
+| Stage | Notebook                                               | Main input                                                                                            | Main output                                                                   |
+| ----- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| 1     | `notebooks/01_AURKB_COCONUT_Prescreening.ipynb`        | COCONUT natural-product export                                                                        | 86,056-compound prescreened library                                           |
+| 2     | `notebooks/02_AURKB_Classical_QSAR_Reproduction.ipynb` | Curated AURKB bioactivity data, frozen descriptor matrix, model artifacts, and the Notebook 1 library | Classical QSAR validation and the 6,232-compound QSAR→GCN transfer            |
+| 3     | `notebooks/03_AURKB_GCN_Consensus_Screening.ipynb`     | 6,232-compound transfer set                                                                           | GCN evaluation, consensus scores, tier assignments, and 29 Tier 1A candidates |
 
-| Stage | Value |
-|---|---|
-| COCONUT records screened | 738,827 |
-| Valid standardized structures | 735,561 |
-| Prescreened compounds | 86,056 |
-| Raw ChEMBL AURKB records | 3,248 |
-| Curated compounds (active / inactive) | 1,854 (1,429 / 425) |
-| Descriptors (raw / selected) | 217 / 165 |
-| Random held-out ROC-AUC / PR-AUC / BA / MCC / Brier | 0.9063 / 0.9665 / 0.7903 / 0.6107 / 0.0915 |
-| Scaffold-disjoint train / calibration / test | 1,062 / 348 / 444 |
-| Scaffold-disjoint ROC-AUC / PR-AUC / BA / MCC / Brier | 0.8531 / 0.9542 / 0.6798 / 0.4279 / 0.1160 |
-| Y-randomization | 30 permutations; observed CV ROC-AUC 0.888611; permuted mean 0.504881 ± 0.023899; empirical p ≈ 0.032258 |
-| Inside descriptor applicability domain | 34,721 |
-| Probability ≥ 0.50 | 31,020 |
-| QSAR→GCN transfer | 6,232 rows, SHA-256 `8821947e92d8b209d291b627bae3b1d5068c6e2f1c0154f695abf0e73673f4df` |
-| GCN random split (train / validation / test) | 1,112 / 371 / 371 |
-| GCN scaffold split (train / validation / test) | 1,109 / 371 / 374 |
-| Selected GCN architecture | graph layers [128, 128], dense 256, dropout 0.30, learning rate 0.0005 |
-| Selected validation ROC-AUC | 0.8670 |
-| Calibrated random-test / scaffold-test ROC-AUC | 0.8881 / 0.9058 |
-| Consensus filters (GCN / uncertainty / structural support / alert-free) | 5,293 / 5,296 / 1,006 / 5,232 |
-| Tiers 1 / 2 / 3 / 4 | 615 / 3,742 / 936 / 939 |
-| Tier 1A | 29 |
-| Docked candidates meeting ≤ −9.0 kcal/mol | 17 |
-| Candidates advanced to 100-ns MD | 3 |
+Each notebook contains an introductory documentation cell describing its role in the workflow, principal inputs and outputs, and relationship to the adjacent stages.
 
-## 5. Required supporting script
+## 3. Key workflow checkpoints
 
-`scripts/aurkb_prescreening_vscode.py` — the prescreening implementation imported by Notebook 1 as
-`from aurkb_prescreening_vscode import PrescreenConfig, run_prescreening`. It is the original file,
-copied unchanged.
+| Item                                             |       Value |
+| ------------------------------------------------ | ----------: |
+| COCONUT records screened                         |     738,827 |
+| Valid standardized structures                    |     735,561 |
+| Prescreened compounds                            |      86,056 |
+| Raw ChEMBL AURKB records                         |       3,248 |
+| Curated AURKB compounds                          |       1,854 |
+| Active / inactive compounds                      | 1,429 / 425 |
+| Initial / selected descriptors                   |   217 / 165 |
+| Compounds within descriptor applicability domain |      34,721 |
+| Compounds with P(active) ≥ 0.50                  |      31,020 |
+| QSAR→GCN transfer set                            |       6,232 |
+| Tier 1 candidates                                |         615 |
+| Tier 1A candidates                               |          29 |
+| Docking candidates meeting ≤ −9.0 kcal/mol       |          17 |
+| Compounds advanced to 100-ns MD                  |           3 |
 
-SHA-256: `27f4979142422cb657278508bac89a91e6b63d42d209ca2ffec58ee8075b101e`
+The manuscript-linked 6,232-row QSAR→GCN transfer was verified against the following SHA-256 checksum:
 
-To re-run Notebook 1, place this script in the same directory as the notebook.
+```text
+8821947e92d8b209d291b627bae3b1d5068c6e2f1c0154f695abf0e73673f4df
+```
 
-No other local script is imported by any of the three notebooks; every other import is a published
-third-party package.
+Detailed model-performance values, validation results, split definitions, and provenance information are provided in `REPRODUCIBILITY.md` and in the notebooks themselves.
 
-## 6. Frozen-artifact policy
+## 4. Supporting code
 
-The scientific state of this study is frozen.
+Notebook 1 depends on:
 
-- The notebooks here are presentation-only copies of the executed originals. Only Markdown text and
-  Python comments were edited. Executable code, cell order, cell identifiers, execution counts and all
-  stored outputs are unchanged.
-- No notebook was re-executed to build this repository.
-- Historical, manuscript-authoritative artifacts are never replaced by values recalculated in a current
-  software environment. Where the two disagree, the historical value stands and the disagreement is
-  recorded as software-drift evidence.
-- Scientific warnings, environment records and run identifiers are retained deliberately.
+```text
+scripts/aurkb_prescreening_vscode.py
+```
 
-Evidence for these statements is in `provenance/`.
+The file included here is the preserved script used with the prescreening notebook.
 
-## 7. Environment
+SHA-256:
 
-The three notebooks ran in three different environments, and their pinned versions are mutually
-incompatible in a single environment. Full detail, with the source of evidence for each version, is in
-`environment/environment_versions.md`; the machine-readable record is
-`environment/requirements-recorded.txt`.
+```text
+27f4979142422cb657278508bac89a91e6b63d42d209ca2ffec58ee8075b101e
+```
 
-Summary:
+When reproducing the prescreening workflow, the script should be available on the notebook's Python import path.
 
-| Stage | Python | Key packages |
-|---|---|---|
-| Notebook 1 | 3.13.5 (Windows, VS Code) | pandas 2.2.3, numpy 2.2.5, RDKit 2026.03.2 |
-| Notebook 2 | 3.12.13 (Windows, conda `research-py312`) | numpy 2.3.5, pandas 2.2.3, scikit-learn 1.8.0, xgboost 3.1.3, RDKit 2025.9.4 |
-| Notebook 3 | 3.12.13 (Google Colab, Linux) | numpy 1.26.4, pandas 2.2.2, scikit-learn 1.6.1, TensorFlow 2.20.0, DeepChem 2.8.1.dev, RDKit 2026.03.2, `TF_USE_LEGACY_KERAS=1` |
+## 5. Reproducibility and provenance
 
-The original historical QSAR training environment is only partially recoverable: scikit-learn 1.6.1
-from joblib serialization metadata; the xgboost version was not recorded.
+The notebooks in this repository retain the computational state used for the study.
 
-## 8. Data provenance
+* Executable notebook code, cell order, cell identifiers, execution counts, and stored scientific outputs were preserved during preparation of the repository.
+* The notebooks were not re-executed solely for repository preparation.
+* Historical results and provenance records are preserved where software-version sensitivity affects exact reproduction. Where required computational artifacts are not distributed with this repository, this is stated explicitly in `REPRODUCIBILITY.md`.
+* Checksums, notebook-comparison records, and other provenance information are available in `provenance/`.
+* Detailed information on the relationship between the three computational stages is provided in `REPRODUCIBILITY.md`.
 
-| Source | Used for | Shipped here |
-|---|---|---|
-| COCONUT natural-product database (`coconut_csv-05-2026.csv`) | prescreening input | no |
-| ChEMBL, target CHEMBL2185 | AURKB IC50 bioactivity curation | no |
-| RCSB PDB entry 4AF3 (AURKB–INCENP–VX-680, 2.75 Å) | docking receptor | no |
-| miRTarBase 2025 | AURKB-regulatory miRNA evidence | no |
-| Supplementary Data Files S1–S8 | derived results tables | not yet; see `data/supplementary/README.md` |
+## 6. Computational environments
 
-Redistribution terms for each third-party source are discussed in
-`THIRD_PARTY_DATA_AND_LICENSE_NOTES.md`. No data file is redistributed here until its redistribution
-status has been confirmed by the authors.
+The three notebooks were executed in different software environments.
 
-## 9. Repository structure
+| Stage      | Python                      | Selected recorded packages                                                                             |
+| ---------- | --------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Notebook 1 | 3.13.5, Windows/VS Code     | pandas 2.2.3, NumPy 2.2.5, RDKit 2026.03.2                                                             |
+| Notebook 2 | 3.12.13, Windows/conda      | NumPy 2.3.5, pandas 2.2.3, scikit-learn 1.8.0, XGBoost 3.1.3, RDKit 2025.9.4                           |
+| Notebook 3 | 3.12.13, Google Colab/Linux | NumPy 1.26.4, pandas 2.2.2, scikit-learn 1.6.1, TensorFlow 2.20.0, DeepChem 2.8.1.dev, RDKit 2026.03.2 |
+
+Additional environment information and the evidence supporting recorded package versions are available in:
+
+```text
+environment/environment_versions.md
+environment/requirements-recorded.txt
+```
+
+The historical QSAR training environment could only be partially reconstructed from preserved artifacts. Where an exact historical version was not recorded, the repository documentation identifies it as unavailable rather than inferring a version.
+
+## 7. Data sources
+
+The study used publicly available or externally maintained scientific resources together with derived study data.
+
+| Source                           | Role in the study                    | Included here                         |
+| -------------------------------- | ------------------------------------ | ------------------------------------- |
+| COCONUT natural-product database | Natural-product prescreening         | No                                    |
+| ChEMBL, target CHEMBL2185        | AURKB bioactivity curation           | No                                    |
+| RCSB PDB 4AF3                    | Structural modeling/docking receptor | No                                    |
+| miRTarBase 2025                  | AURKB-related miRNA evidence         | No                                    |
+| Study supplementary data         | Derived computational results        | See manuscript supplementary material |
+
+Third-party data sources and redistribution considerations are summarized in `THIRD_PARTY_DATA_AND_LICENSE_NOTES.md`.
+
+## 8. Repository structure
 
 ```text
 AURKB-PDAC-computational-workflow/
-    README.md                                  this file
-    REPRODUCIBILITY.md                         lineage, reproducible vs preserved values, limitations
-    THIRD_PARTY_DATA_AND_LICENSE_NOTES.md      third-party data sources and licence questions
-    CITATION.cff                               citation metadata (author fields to be completed)
-    MANIFEST.sha256                            SHA-256 of every shipped file
-    .gitignore
-
-    notebooks/                                 the three submission notebooks
-    scripts/                                   the exact prescreening script imported by Notebook 1
-    data/supplementary/                        placeholder; see its README
-    environment/                               recorded environments and dependency records
-    provenance/                                hashes, integrity report, comment-only diff, manifest
-    journal/                                   Code Availability draft, Online Resource caption,
-                                               archival checklist
-    audit_private/                             internal audit output; excluded from Git by .gitignore
+│
+├── README.md
+├── REPRODUCIBILITY.md
+├── CITATION.cff
+├── LICENSE
+├── MANIFEST.sha256
+├── THIRD_PARTY_DATA_AND_LICENSE_NOTES.md
+│
+├── notebooks/
+│   ├── 01_AURKB_COCONUT_Prescreening.ipynb
+│   ├── 02_AURKB_Classical_QSAR_Reproduction.ipynb
+│   └── 03_AURKB_GCN_Consensus_Screening.ipynb
+│
+├── scripts/
+│   └── aurkb_prescreening_vscode.py
+│
+├── environment/
+│   ├── environment_versions.md
+│   ├── requirements-recorded.txt
+│   └── requirements_aurkb_prescreening.txt
+│
+├── provenance/
+│   ├── artifact_manifest_sha256.csv
+│   ├── comment_only_code_diff.tsv
+│   ├── notebook_integrity_report.json
+│   └── notebook_original_hashes.txt
+│
+├── data/
+│   └── supplementary/
+│
+└── journal/
 ```
 
-## 10. Reproduction limitations
+## 9. Reproducibility notes
 
-This package is not a complete end-to-end re-execution of the study, and it does not claim to be.
+This repository is intended to support verification of the three-stage screening workflow rather than serve as a complete end-to-end rerun package for every analysis reported in the study.
 
-- The COCONUT export, the raw ChEMBL extraction, the frozen descriptor matrix, the trained QSAR and
-  GCN artifacts, the split assignments and the trained GCN ensemble weights are not included.
-- The complete historical all-screened QSAR output no longer exists, so the upstream counts 34,721 and
-  31,020 and the exact re-selection of the 6,232 candidates cannot be regenerated.
-- Descriptor regeneration under a current RDKit build changes `BertzCT` and `NumHAcceptors`, so the
-  frozen descriptor matrix is the authoritative input rather than a recomputable one.
-- Fresh model fitting in a modern environment is recorded to disagree with the archived historical
-  metrics; those disagreements are retained as evidence, not corrected.
-- Docking, ADMET/toxicity, molecular dynamics and miRNA analyses were performed with external tools
-  and are outside these notebooks.
+Several large or externally sourced inputs are not distributed here, including the original COCONUT export, raw ChEMBL extraction, frozen descriptor matrix, trained model artifacts, split assignments, and GCN ensemble weights.
 
-What can be verified independently, and how, is listed in `REPRODUCIBILITY.md` sections 3 and 7.
+The historical complete QSAR screening output is also not available as a standalone artifact. Consequently, the intermediate totals of 34,721 compounds within the descriptor applicability domain and 31,020 compounds above the probability threshold cannot be regenerated independently from the repository alone. The downstream 6,232-compound transfer set is retained as a hash-verified workflow checkpoint.
 
-## 11. Citation
+Descriptor calculations were also found to be sensitive to RDKit version, particularly for `BertzCT` and `NumHAcceptors`. The historical descriptor matrix used in the study therefore represents the computational input underlying the reported QSAR workflow rather than a matrix regenerated with a newer RDKit release.
 
-Citation metadata is in `CITATION.cff`. The author fields and the DOI are placeholders until the
-authors complete them.
+Molecular docking, developability/toxicity assessment, molecular dynamics, and miRNA analyses were performed using separate software workflows and are documented in the manuscript and supplementary information.
 
-```text
-[Authors]. Chemotype-aware QSAR-GCN consensus screening and molecular modeling prioritize
-natural-product-derived AURKB-targeting candidates for pancreatic ductal adenocarcinoma.
-Molecular Diversity, [year]. DOI: [to be assigned]
-```
+Further details on reproducible and preserved components of the analysis are provided in `REPRODUCIBILITY.md`.
 
-## 12. Use of AI assistance
+## 10. Citation
 
-The submission-preparation work in this repository — notebook Markdown cleanup, comment cleanup,
-integrity checking and documentation — was carried out with AI assistance (Claude, Anthropic). No
-scientific result, model, prediction, descriptor, structure, score or reported value was generated,
-altered or recalculated by that assistance. The AI assistance is not an author of the study.
+Citation information for this repository is provided in `CITATION.cff`.
+
+Please cite the associated article when using this workflow or its derived results. Final bibliographic information and DOI should be added after publication.
+
+## 11. License
+
+Original source code and notebook code in this repository are released under the BSD 3-Clause License. See [`LICENSE`](LICENSE).
+
+Third-party databases, source data, software packages, molecular structures, and other externally sourced materials are not relicensed by this repository and remain subject to their respective terms of use and licences.
