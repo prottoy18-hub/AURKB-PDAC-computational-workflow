@@ -27,10 +27,8 @@ keywords:
   - "natural products"
 
 license: BSD-3-Clause
-
 version: "1.0.0"
-
-date-released: "2026-08-18"
-
+date-released: "2026-08-19"
 repository-code: "https://github.com/prottoy18-hub/AURKB-PDAC-computational-workflow"
+doi: "10.5281/zenodo.22015183"
 orcid: "https://orcid.org/0009-0008-3060-1989"
