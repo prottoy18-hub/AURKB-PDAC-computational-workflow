@@ -192,10 +192,14 @@ Further details on reproducible and preserved components of the analysis are pro
 
 ## 10. Citation
 
-Citation information for this repository is provided in `CITATION.cff`.
+Software citation metadata are provided in [`CITATION.cff`](CITATION.cff).
 
-Please cite the associated article when using this workflow or its derived results. Final bibliographic information and DOI should be added after publication.
+The archived `v1.0.0` release of this computational workflow is available through Zenodo:
 
+**DOI: `10.5281/zenodo.22015183`**
+
+Please cite the associated research article when using the scientific results of this workflow.
+[![DOI](https://zenodo.org/badge/1336903641.svg)](https://doi.org/10.5281/zenodo.22015182)
 ## 11. License
 
 Original source code and notebook code in this repository are released under the BSD 3-Clause License. See [`LICENSE`](LICENSE).
